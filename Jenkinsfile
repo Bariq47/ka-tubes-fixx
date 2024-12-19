@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "bariq47/test-pipeline:${BUILD_NUMBER}" // Nama image Docker
-		// DOCKER_USERNAME = credentials("docker-credential") // Masukkan username Docker Hub secara manual
-        // DOCKER_PASSWORD = credentials("docker-credential")  // Masukkan password Docker Hub secara manual
-        DISCORD_WEBHOOK = credentials("discrod-webhook-id") // ID Webhook dari Jenkins credentials
+        DOCKER_IMAGE = "bariq47/test-pipeline:${BUILD_NUMBER}"
+		// DOCKER_USERNAME = credentials("docker-credential")
+        // DOCKER_PASSWORD = credentials("docker-credential")
+        DISCORD_WEBHOOK = credentials("discrod-webhook-id")
     }
 
     stages {
