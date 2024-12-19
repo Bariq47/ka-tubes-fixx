@@ -22,6 +22,12 @@
                         data: "category.name",
                         name: "category.name"
                     },
+                    // {
+                    //     data: "photos",
+                    //     name: "photos",
+                    //     orderable: false,
+                    //     searchable: false
+                    // },
                     {
                         data: "actions",
                         name: "actions",
@@ -83,13 +89,17 @@
                             <i class="bi bi-download me-1"></i> to Excel
                         </a>
                     </li> --}}
-                    <li class="list-inline-item">|</li>
-                    <li class="list-inline-item">
-                        <a href="{{ route('products.create') }}" class="btn"
-                            style="background-color: #644961; color:white">
-                            <i class="bi bi-plus-circle me-1"></i> Add Product
-                        </a>
-                    </li>
+                <li class="list-inline-item">|</li>
+                <li class="list-inline-item">
+                    <a href="{{ route('products.create') }}" class="btn" style="background-color: #644961; color:white">
+                        <i class="bi bi-plus-circle me-1"></i> Add Product
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ route('categories.create') }}" class="btn" style="background-color: #644961; color:white">
+                        <i class="bi bi-plus-circle me-1"></i> Add Category
+                    </a>
+                </li>
                 </ul>
             </div>
         </div>
@@ -102,6 +112,7 @@
                         <th>Price</th>
                         <th>Stock</th>
                         <th>Category</th>
+                        <th>Photos</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -112,10 +123,19 @@
                             <td style="text-align: center">{{ $product->price }}</td>
                             <td style="text-align: center">{{ $product->stock }}</td>
                             <td style="text-align: center">{{ $product->category->name }}</td>
+                            <td style="text-align: center">
+                                @if ($product->encrypted_filename)
+                                    <img src="{{ Storage::url('files/' . $product->encrypted_filename) }}"
+                                        alt="{{ $product->name }}" style="width: 100px; height: auto;">
+                                @else
+                                    No Image
+                                @endif
+                            </td>
                             <td>@include('products.actions')</td>
                         </tr>
                     @endforeach
                 </tbody>
+
             </table>
         </div>
         <br>

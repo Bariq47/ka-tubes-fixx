@@ -18,7 +18,34 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+    public function createCategory()
+    {
+        $pageTitle = 'Create Category';
+        $categories = Category::all();
+        return view('category.create', compact('pageTitle', 'categories'));
+    }
 
+    public function storeCategory(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|unique:categories,code',
+            'name' => 'required|unique:categories,name',
+            'description' => 'nullable|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $category = new Category();
+        $category->code = $request->code;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+
+        Alert::success('Added Successfully', 'Category Added Successfully.');
+        return redirect()->route('home');
+    }
     public function index()
     {
         $pageTitle = 'Product List';
@@ -47,6 +74,8 @@ class HomeController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
+            'category' => 'required|exists:categories,id',
+            'photo' => 'required',
         ], $messages);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -126,7 +155,7 @@ class HomeController extends Controller
             if ($product->encrypted_filename && Storage::exists('public/files/' . $product->encrypted_filename)) {
                 Storage::delete('public/files/' . $product->encrypted_filename);
             }
-            $file->store('public/files');
+            $file->storeAs('public/storage/products', $encryptedFilename);
             $product->original_filename = $originalFilename;
             $product->encrypted_filename = $encryptedFilename;
         }
