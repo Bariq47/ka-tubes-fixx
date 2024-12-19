@@ -3,12 +3,13 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "bariq47/test-pipeline:${BUILD_NUMBER}" // Nama image Docker
-        DISCORD_WEBHOOK = credentials('https://discord.com/api/webhooks/1319199178613723137/dHuBbFC2duOpZmycZPmwEA2G9k9tqqJwJqpoZWtY-dneGRfIfHxA9seZ-EE1CRhyvU1J') // ID Webhook dari Jenkins credentials
+        DISCORD_WEBHOOK = credentials('discord-webhook') // ID Webhook dari Jenkins credentials
     }
 
     stages {
         stage('Clone Repository') {
             steps {
+                // Clone kode sumber dari GitHub
                 checkout scm
             }
         }
