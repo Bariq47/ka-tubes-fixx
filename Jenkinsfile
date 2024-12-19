@@ -20,18 +20,18 @@ pipeline {
             steps {
                 // Build Docker image
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    bat "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Pubat Docker Image') {
             steps {
-                // Login ke Docker Hub dan push image
+                // Login ke Docker Hub dan pubat image
                 script {
-                    sh """
+                    bat """
                     echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-                    docker push ${DOCKER_IMAGE}
+                    docker pubat ${DOCKER_IMAGE}
                     """
                 }
             }
@@ -45,8 +45,8 @@ pipeline {
                         "content": "Pipeline succeeded! 🚀",
                         "embeds": [
                             [
-                                "title": "Docker Image Built and Pushed",
-                                "description": "Image `${DOCKER_IMAGE}` has been pushed to Docker Hub.",
+                                "title": "Docker Image Built and Pubated",
+                                "description": "Image `${DOCKER_IMAGE}` has been pubated to Docker Hub.",
                                 "color": 3066993 // Warna hijau
                             ]
                         ]
