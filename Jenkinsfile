@@ -11,14 +11,12 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                // Clone kode sumber dari GitHub
                 checkout scm
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                // Build Docker image
                 script {
                     bat "docker build -t ${DOCKER_IMAGE} ."
                 }
@@ -27,7 +25,6 @@ pipeline {
 
         stage('push Docker Image') {
             steps {
-                // Login ke Docker Hub dan pubat image
                 withCredentials([usernamePassword(credentialsId: 'docker-credential', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]){
                     bat """
                     echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
@@ -39,15 +36,14 @@ pipeline {
 
         stage('Notify Discord') {
             steps {
-                // Kirim notifikasi ke Discord
                 script {
                     def message = [
-                        "content": "Pipeline succeeded! 🚀",
+                        "content": "Pipeline berhasil",
                         "embeds": [
                             [
-                                "title": "Docker Image Built and Pubated",
-                                "description": "Image `${DOCKER_IMAGE}` has been pubated to Docker Hub.",
-                                "color": 3066993 // Warna hijau
+                                "title": "docker build dan push",
+                                "description": "Image `${DOCKER_IMAGE}` berhasil di push",
+                                "color": 3066993
                             ]
                         ]
                     ]
@@ -65,15 +61,14 @@ pipeline {
 
     post {
         failure {
-            // Kirim notifikasi kegagalan ke Discord
             script {
                 def message = [
-                    "content": "Pipeline failed! ❌",
+                    "content": "Pipeline gagal",
                     "embeds": [
                         [
-                            "title": "Pipeline Error",
-                            "description": "There was an issue during the pipeline.",
-                            "color": 15158332 // Warna merah
+                            "title": "Pipeline gagal",
+                            "description": "Tterdapat kesalahan",
+                            "color": 15158332
                         ]
                     ]
                 ]
