@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "bariq47/test-pipeline:${BUILD_NUMBER}" // Nama image Docker
-		DOCKER_USERNAME = credentials("docker-credential") // Masukkan username Docker Hub secara manual
-        DOCKER_PASSWORD = credentials("docker-credential")  // Masukkan password Docker Hub secara manual
+		// DOCKER_USERNAME = credentials("docker-credential") // Masukkan username Docker Hub secara manual
+        // DOCKER_PASSWORD = credentials("docker-credential")  // Masukkan password Docker Hub secara manual
         DISCORD_WEBHOOK = credentials("discrod-webhook-id") // ID Webhook dari Jenkins credentials
     }
 
@@ -28,7 +28,7 @@ pipeline {
         stage('push Docker Image') {
             steps {
                 // Login ke Docker Hub dan pubat image
-                script {
+                withCredentials([usernamePassword(credentialsId: 'docker-credential', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]){
                     bat """
                     echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
                     docker push ${DOCKER_IMAGE}
