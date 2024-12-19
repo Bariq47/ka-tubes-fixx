@@ -30,9 +30,12 @@ Route::resource('products', HomeController::class);
 // Route::get('download-file/{productId}', [
 //     HomeController::class, 'productId'
 // ])->name('products.downloadFile');
-
+Route::get('categories/create', [HomeController::class, 'createCategory'])->name('categories.create');
+Route::post('categories/store', [HomeController::class, 'storeCategory'])->name('categories.store');
 Route::get('/products/download/{productId}', [HomeController::class, 'downloadFile'])->name('products.downloadFile');
 
 Route::get('getProducts', [HomeController::class, 'getData'])->name('products.getData');
 
 // Route::get('exportExcel', [HomeController::class, 'exportExcel'])->name('products.exportExcel');
+
+
