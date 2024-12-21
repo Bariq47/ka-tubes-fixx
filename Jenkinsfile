@@ -35,6 +35,25 @@ pipeline {
             }
         }
 
+        stage('test run container'){
+            steps {
+                script {
+                    bat "docker run -d --name test-run-container ${DOCKER_IMAGE}"
+                }
+
+            }
+        }
+
+        stage('stop and remove container'){
+            steps {
+                script {
+                    bat "docker stop test-run-container && docker test-run-container"
+                }
+
+            }
+        }
+
+
         stage('Notify Discord') {
             steps {
                 script {
