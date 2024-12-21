@@ -47,7 +47,7 @@ pipeline {
         stage('stop and remove container'){
             steps {
                 script {
-                    bat "docker stop test-run-container && docker test-run-container"
+                    bat "docker stop test-run-container && docker rm test-run-container"
                 }
 
             }
