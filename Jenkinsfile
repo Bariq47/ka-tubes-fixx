@@ -38,7 +38,10 @@ pipeline {
         stage('test run container'){
             steps {
                 script {
-                    bat "docker run -d --name test-run-container ${DOCKER_IMAGE}"
+                    bat """
+                    docker rm -f test-run-container || true
+                    docker run -d --name test-run-container ${DOCKER_IMAGE}
+                    """
                 }
 
             }
@@ -47,7 +50,10 @@ pipeline {
         stage('stop and remove container'){
             steps {
                 script {
-                    bat "docker stop test-run-container && docker rm test-run-container"
+                    bat """
+                    docker stop test-run-container || true
+                    docker rm test-run-container || true
+                    """
                 }
 
             }
